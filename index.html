@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>間違い探しゲーム！</title>
+</head>
+<body>
+    <h1>間違い探しゲーム！</h1>
+    <div class="score">
+        Time:
+        <span id="time">0</span>
+    </div>
+    <button type="button" onclick="init()">ゲーム開始</button>
+    <div id="cells">
+    </div>
+
+    <script src="ncmb.min.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/game.js"></script>
+    <script>
+      const APPLICATION_KEY = "7d3b164c0006fcd5b1f0f0b9eb807c5222fea143c5b900041c3d0955f2f7213e";
+      const CLIENT_KEY = "5457532a5957daa5aefd1cc5481c8d9d3c8109a937da929b9aeed8d0fb38c53a";
+      const ncmb = new NCMB(APPLICATION_KEY,CLIENT_KEY);
+      const DBName = "TestClass";
+
+      let TestClass = ncmb.DataStore(DBName);
+
+      // データの保存
+      function save(){
+        let test = new TestClass();
+        let key = "scorebord";
+        //let value = "Hello, NCMB!";
+        //const text = document.getElementById('message');
+        //let value = text.value;
+        //let value = "Hello, NCMB!";
+        test.set(key, timer-1);
+        test.save()
+          .then (function(){
+            console.log("成功");
+          })
+          .catch(function(err){
+            console.log("エラー発生:" + err);
+          });
+      }
+
+      // データの読み込み
+      //let test = new TestClass();
+      function load(){
+        TestClass
+        .order("scorebord")
+        .fetchAll()
+        .then(function(results){
+          /*for(let i=0; i<results.length; i++) {
+            console.log(results[i]);
+          }*/
+          if(results[0].scorebord>=timer-1){
+            alert("High score!:"+(timer-1));
+          }
+        })
+        .catch(function(err){
+          console.log("エラー発生" + err);
+        });
+      }
+      </script>
+</body>
+</html>
